@@ -115,7 +115,7 @@ class RAGPipeline:
     # 處理 pipeline 流程
     def process_context(self, query, chunks):
         x = self.semantic_dedup(chunks)
-        x = self.rerank(query, chunks)
+        x = self.rerank(query, x)
         x =  self.merge(x)
         return x
 
@@ -142,7 +142,7 @@ class RAGPipeline:
         # 判斷輸入長度
         if (0 < len(query) <= MAX_LEN):
             # 進 DB 調資料
-            chunks, ids = self.retrieve(query)
+            chunks = self.retrieve(query)
             # chunk 處理
             context = self.process_context(query, chunks)
             # 生成答案
